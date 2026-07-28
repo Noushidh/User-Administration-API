@@ -1,10 +1,12 @@
-import { Request,Response } from "express";
+import { NextFunction, Request,Response } from "express";
+import { CreateUserUseCase } from "../../../application/use-cases/create-user-usecase";
 
-export const register = async (req:Request, res:Response) => {
+export const register = async (req:Request, res:Response,next:NextFunction) => {
   try {
-    const { name, email, password } = req.body;
-    console.log(name, email, password);
-  } catch (error) {
-    
+    const createUserUseCase = new CreateUserUseCase();
+    const result  = await createUserUseCase.execute(req.body)
+    return res.status(200).send({sucess:true,message:"adipoli",result})
+  } catch (error:any) {
+    next(error)
   }
 };
