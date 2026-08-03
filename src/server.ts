@@ -9,12 +9,15 @@ import { connectPostgres } from "./infrastructure/database/postgresql/connection
 const PORT = process.env.PORT || 3000;
 
 async function start() {
-    
-  await connectMongoDB();
-  await connectPostgres();
+  try {
+    await connectMongoDB();
+    await connectPostgres();
 
-  app.listen(PORT, () => {
-    console.log(`server running on  http://localhost:${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`server running on  http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
 start();
