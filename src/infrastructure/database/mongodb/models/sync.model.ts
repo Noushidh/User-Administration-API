@@ -13,7 +13,7 @@ const SyncSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const SyncModel = mongoose.model("FailedSync", SyncSchema);

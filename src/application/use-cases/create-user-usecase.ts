@@ -15,15 +15,6 @@ export class CreateUserUseCase {
     private jwtService: IJwtService,
   ) {}
   async execute(data: CreateUserDTO): Promise<UserResponseDTO> {
-    if (!data.name) {
-      throw new Error("Name is required");
-    }
-    if (!data.email) {
-      throw new Error("Email is required");
-    }
-    if (!data.password) {
-      throw new Error("Password is required");
-    }
     const existing = await this.userRepository.findByEmail(data.email);
     if (existing) {
       throw new Error("Email exists");

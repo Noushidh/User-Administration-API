@@ -1,21 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import { makeLoginUserUseCase } from "../../../infrastructure/factories/login-user.factory";
+import { loginSchema } from "../../schemas/login.schema";
+import {loginUserUseCase} from "../../../infrastructure/container/container"
 
 export const login = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
-    const loginUserUseCase = makeLoginUserUseCase();
 
-    const result = await loginUserUseCase.execute(req.body);
+    const validateData = loginSchema.parse(req.body)
+
+    const result = await loginUserUseCase.execute(validateData);
 
     res.cookie("token", result.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, 
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({

@@ -5,7 +5,6 @@ import app from "./app";
 import { connectMongoDB } from "./infrastructure/database/mongodb/connection";
 import { connectPostgres } from "./infrastructure/database/postgresql/connection";
 
-
 const PORT = process.env.PORT || 3000;
 
 async function start() {

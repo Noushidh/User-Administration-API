@@ -8,17 +8,10 @@ export class LoginUserUseCase {
   constructor(
     private userRepository: IUserRepository,
     private hashService: IHashService,
-    private jwtService: IJwtService
+    private jwtService: IJwtService,
   ) {}
 
   async execute(data: LoginUserDTO): Promise<LoginResponseDTO> {
-    if (!data.email) {
-      throw new Error("Email is required");
-    }
-
-    if (!data.password) {
-      throw new Error("Password is required");
-    }
 
     const user = await this.userRepository.findByEmail(data.email);
 
@@ -28,7 +21,7 @@ export class LoginUserUseCase {
 
     const isPasswordValid = await this.hashService.compare(
       data.password,
-      user.password
+      user.password,
     );
 
     if (!isPasswordValid) {
