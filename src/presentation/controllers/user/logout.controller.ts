@@ -1,18 +1,26 @@
 import { NextFunction, Request, Response } from "express";
 
-export const logout = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-    });
+export class LogoutController {
+  logout = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    console.log("user",req.user)
+    try {
 
-    return res.status(200).json({
-      success: true,
-      message: "Logout successful",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Logout successful",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+}

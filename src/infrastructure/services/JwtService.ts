@@ -2,9 +2,28 @@ import jwt from "jsonwebtoken";
 import { IJwtService } from "../../application/interface/IJwtService";
 
 export class JwtService implements IJwtService {
-  generateToken(payload: { id: string; name: string; email: string }): string {
+  generateToken(payload: {
+    id: string;
+    name: string;
+    email: string;
+  }): string {
     return jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: "1d",
     });
+  }
+
+  verifyToken(token: string): {
+    id: string;
+    name: string;
+    email: string;
+  } {
+    return jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as {
+      id: string;
+      name: string;
+      email: string;
+    };
   }
 }
