@@ -1,14 +1,16 @@
 # User Administration API
 
-A backend User Administration API built with **Node.js, TypeScript, Express.js, MongoDB, PostgreSQL, RabbitMQ, and JWT**.
+A backend **User Administration REST API** built with **Node.js, TypeScript, Express.js, MongoDB, PostgreSQL, RabbitMQ, and JWT**.
 
-The project follows **Clean Architecture** and uses an **Event-Driven Architecture** to synchronize user data between MongoDB and PostgreSQL through RabbitMQ.
+The project follows **Clean Architecture** and uses an **Event-Driven Architecture** to asynchronously synchronize user data between MongoDB and PostgreSQL through RabbitMQ.
 
 ---
 
 ## 🚀 Overview
 
-This project provides user authentication and administration functionality including:
+This project provides user authentication and administration functionality with a focus on **scalable backend architecture, separation of concerns, and asynchronous database synchronization**.
+
+### Core functionality
 
 - User Registration
 - User Login
@@ -21,7 +23,7 @@ This project provides user authentication and administration functionality inclu
 - RabbitMQ for asynchronous communication
 - Background Worker for database synchronization
 
-The main architectural goal is to keep the business logic independent from external technologies while using asynchronous events to synchronize data between databases.
+The application separates the API layer from background processing. MongoDB acts as the primary source of truth, while PostgreSQL is updated asynchronously through RabbitMQ events.
 
 ---
 
@@ -30,24 +32,24 @@ The main architectural goal is to keep the business logic independent from exter
 - 🔐 JWT-based authentication
 - 👤 User registration and login
 - 🚪 User logout
-- 🔒 Protected API routes
-- 🔑 Password hashing
+- 🔒 Protected routes
+- 🔑 Secure password hashing
 - 🍃 MongoDB as the source of truth
-- 🐘 PostgreSQL for synchronized data
+- 🐘 PostgreSQL data synchronization
 - 🐇 RabbitMQ message broker
-- ⚡ Event-driven database synchronization
+- ⚡ Event-driven architecture
+- 🔄 Asynchronous database synchronization
+- 🧵 Separate API and Worker processes
 - 🏗️ Clean Architecture
 - 📦 Repository Pattern
 - 💉 Dependency Injection
-- 🔄 Asynchronous background processing
-- 🧵 Separate API and Worker processes
 - 🟦 TypeScript for type safety
 
 ---
 
 # 🏗️ Architecture
 
-The project combines **Clean Architecture** and **Event-Driven Architecture**.
+The project combines **Clean Architecture** with **Event-Driven Architecture**.
 
 ### High-Level Architecture
 
@@ -96,6 +98,6 @@ The project combines **Clean Architecture** and **Event-Driven Architecture**.
                                ▼
                        ┌────────────────┐
                        │  PostgreSQL    │
-                       │  Synchronized  │
+                       │  Synchronized │
                        │      Data      │
                        └────────────────┘
