@@ -2,46 +2,56 @@
 
 A backend **User Administration REST API** built with **Node.js, TypeScript, Express.js, MongoDB, PostgreSQL, RabbitMQ, and JWT**.
 
-The project follows **Clean Architecture** and uses an **Event-Driven Architecture** to asynchronously synchronize user data between MongoDB and PostgreSQL through RabbitMQ.
+The project follows **Clean Architecture** and **Event-Driven Architecture** to provide scalable authentication, user management, and asynchronous database synchronization.
 
+---
 
 ## 🚀 Overview
 
-This project provides user authentication and administration functionality with a focus on **scalable backend architecture, separation of concerns, and asynchronous database synchronization**.
+This project provides a backend API for user authentication and administration with a focus on:
 
-### Core functionality
+* Scalable backend architecture
+* Separation of concerns
+* Secure authentication
+* Asynchronous database synchronization
+* Clean and maintainable code structure
 
-- User Registration
-- User Login
-- User Logout
-- JWT Authentication
-- Password Hashing
-- Protected Routes
-- MongoDB as the primary source of truth
-- PostgreSQL for synchronized user data
-- RabbitMQ for asynchronous communication
-- Background Worker for database synchronization
+### Core Functionality
 
-The application separates the API layer from background processing. MongoDB acts as the primary source of truth, while PostgreSQL is updated asynchronously through RabbitMQ events.
+* User Registration
+* User Login
+* User Logout
+* JWT Authentication
+* Password Hashing
+* Protected Routes
+* MongoDB as the primary source of truth
+* PostgreSQL for synchronized user data
+* RabbitMQ for asynchronous communication
+* Background Worker for database synchronization
 
+The application separates the **API layer** from **background processing**.
+
+MongoDB acts as the **primary source of truth**, while PostgreSQL is updated asynchronously through RabbitMQ events.
+
+---
 
 ## ✨ Features
 
-- 🔐 JWT-based authentication
-- 👤 User registration and login
-- 🚪 User logout
-- 🔒 Protected routes
-- 🔑 Secure password hashing
-- 🍃 MongoDB as the source of truth
-- 🐘 PostgreSQL data synchronization
-- 🐇 RabbitMQ message broker
-- ⚡ Event-driven architecture
-- 🔄 Asynchronous database synchronization
-- 🧵 Separate API and Worker processes
-- 🏗️ Clean Architecture
-- 📦 Repository Pattern
-- 💉 Dependency Injection
-- 🟦 TypeScript for type safety
+* 🔐 JWT-based authentication
+* 👤 User registration and login
+* 🚪 User logout
+* 🔒 Protected routes
+* 🔑 Secure password hashing with bcrypt
+* 🍃 MongoDB as the source of truth
+* 🐘 PostgreSQL data synchronization
+* 🐇 RabbitMQ message broker
+* ⚡ Event-driven architecture
+* 🔄 Asynchronous database synchronization
+* 🧵 Separate API and Worker processes
+* 🏗️ Clean Architecture
+* 📦 Repository Pattern
+* 💉 Dependency Injection
+* 🟦 TypeScript for type safety
 
 ---
 
@@ -101,28 +111,30 @@ The project combines **Clean Architecture** with **Event-Driven Architecture**.
                        └────────────────┘
 ```
 
+---
+
 ## 🧱 Clean Architecture
 
 The project follows **Clean Architecture** to keep the application modular, maintainable, testable, and independent from external frameworks and infrastructure.
 
-The application is divided into four main layers:
+The application is divided into four main layers.
 
 ### Presentation Layer
 
 Responsible for handling HTTP requests and responses.
 
-- Routes
-- Controllers
-- Middleware
-- Request validation
+* Routes
+* Controllers
+* Middleware
+* Request validation
 
 ### Application Layer
 
 Contains the application's use cases and business workflows.
 
-- Use Cases
-- DTOs
-- Interfaces
+* Use Cases
+* DTOs
+* Interfaces
 
 ### Domain Layer
 
@@ -134,13 +146,13 @@ This layer is independent of frameworks, databases, and external services.
 
 Contains implementations for external technologies and services.
 
-- MongoDB
-- PostgreSQL
-- RabbitMQ
-- JWT
-- Password hashing
-- Repository implementations
-- Dependency Injection
+* MongoDB
+* PostgreSQL
+* RabbitMQ
+* JWT
+* Password hashing
+* Repository implementations
+* Dependency Injection
 
 ### Dependency Flow
 
@@ -157,11 +169,17 @@ Domain
 Infrastructure
 ```
 
+---
+
 ## 🔄 Database Synchronization
 
 MongoDB acts as the **primary source of truth** for user data.
 
-When user data is created or updated, an event is published to **RabbitMQ**. The background worker consumes the event and synchronizes the data with PostgreSQL.
+When user data is created or updated, an event is published to **RabbitMQ**.
+
+The background worker consumes the event and synchronizes the data with PostgreSQL.
+
+### Synchronization Flow
 
 ```text
 MongoDB
@@ -176,12 +194,15 @@ Worker
    │
    ▼
 PostgreSQL
+```
 
 This asynchronous approach keeps the API independent from the PostgreSQL synchronization process and allows database synchronization to happen in the background.
-```
+
+---
+
 ## 🔐 Authentication
 
-The application uses **JWT-based authentication** with **bcrypt password hashing** and secure authentication cookies.
+The application uses **JWT-based authentication** with **bcrypt password hashing** and secure **HTTP-only cookies**.
 
 ### Authentication Flow
 
@@ -209,6 +230,9 @@ Protected Routes
    ▼
 JWT Verification Middleware
 ```
+
+---
+
 ## 📂 Project Structure
 
 ```text
@@ -241,32 +265,39 @@ src/
 ├── server.ts
 └── worker.ts
 ```
+
+---
+
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| **Node.js** | Backend runtime |
-| **TypeScript** | Type safety |
-| **Express.js** | REST API framework |
-| **MongoDB** | Primary user data store |
+| Technology     | Purpose                          |
+| -------------- | -------------------------------- |
+| **Node.js**    | Backend runtime                  |
+| **TypeScript** | Type safety                      |
+| **Express.js** | REST API framework               |
+| **MongoDB**    | Primary user data store          |
 | **PostgreSQL** | Synchronized relational database |
-| **RabbitMQ** | Asynchronous message broker |
-| **JWT** | Authentication |
-| **bcrypt** | Password hashing |
-## ⚙️ Environment Variables
+| **RabbitMQ**   | Asynchronous message broker      |
+| **JWT**        | Authentication                   |
+| **bcrypt**     | Password hashing                 |
+
+---
 
 ## 🌐 API Endpoints
 
 ### Authentication
 
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/auth/register` | Register a new user |
-| `POST` | `/api/auth/login` | Authenticate a user |
-| `POST` | `/api/auth/logout` | Logout the authenticated user |
+| Method | Endpoint             | Description                   |
+| ------ | -------------------- | ----------------------------- |
+| `POST` | `/api/auth/register` | Register a new user           |
+| `POST` | `/api/auth/login`    | Authenticate a user           |
+| `POST` | `/api/auth/logout`   | Logout the authenticated user |
 
+---
 
-Create a `.env` file in the project root and configure the required environment variables:
+## ⚙️ Environment Variables
+
+Create a `.env` file in the project root and configure the required environment variables.
 
 ```env
 PORT=3000
@@ -286,58 +317,56 @@ PG_DATABASE=user_administration
 DATABASE_URL=your_prisma_database_url
 ```
 
+> **Note:** Never commit your `.env` file or expose your secrets publicly.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 Make sure you have the following installed:
 
-- **Node.js** (v18 or later)
-- **npm**
-- **MongoDB**
-- **PostgreSQL**
-- **RabbitMQ**
-- **Git**
+* **Node.js** v18 or later
+* **npm**
+* **MongoDB**
+* **PostgreSQL**
+* **RabbitMQ**
+* **Git**
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Noushidh/<your-repository>.git
+git clone https://github.com/Noushidh/User-Administration-API.git
 ```
 
-### 2. Navigate to the Project
-
-```bash
-cd <your-repository>
-```
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 4. Configure Environment Variables
+### 3. Configure Environment Variables
 
 Create a `.env` file in the project root and add the required environment variables.
 
 See the [Environment Variables](#-environment-variables) section above.
 
-### 5. Start Required Services
+### 4. Start Required Services
 
 Make sure the following services are running:
 
-- MongoDB
-- PostgreSQL
-- RabbitMQ
+* MongoDB
+* PostgreSQL
+* RabbitMQ
 
-### 6. Start the API Server
+### 5. Start the API Server
 
 ```bash
 npm run dev
 ```
 
-### 7. Start the Worker
+### 6. Start the Worker
 
 Open another terminal in the project directory and run:
 
@@ -345,10 +374,27 @@ Open another terminal in the project directory and run:
 npm run worker
 ```
 
-The application runs using two processes:
+The application runs using two separate processes:
 
-- **API Server** — handles HTTP requests.
-- **Worker** — consumes RabbitMQ events and synchronizes data with PostgreSQL.
+```text
+┌───────────────────┐
+│    API Server     │
+│                   │
+│ Handles HTTP      │
+│ requests          │
+└───────────────────┘
+
+
+┌───────────────────┐
+│      Worker       │
+│                   │
+│ Consumes RabbitMQ │
+│ events and syncs  │
+│ PostgreSQL        │
+└───────────────────┘
+```
+
+---
 
 ## 📦 Production Build
 
@@ -372,13 +418,31 @@ npm run worker
 
 The production environment requires the following services to be available:
 
-- MongoDB
-- PostgreSQL
-- RabbitMQ
+* MongoDB
+* PostgreSQL
+* RabbitMQ
 
 Make sure the required environment variables are configured before starting the application.
 
-> Use the exact npm scripts defined in `package.json`.
+> **Note:** Use the exact npm scripts defined in `package.json`.
+
+---
+
+## 🔮 Future Improvements
+
+* 🔐 Role-Based Access Control
+* 🔄 Refresh Token Rotation
+* 📧 Email Verification
+* 🔑 Password Reset
+* 📚 Swagger API Documentation
+* 🧪 Unit and Integration Testing
+* 🛡️ Rate Limiting
+* ⚡ Redis Caching
+* 📊 Monitoring and Logging
+* 🐇 Dead-Letter Queues
+* 🐳 Docker-based Production Deployment
+
+---
 
 ## 👨‍💻 Author
 
@@ -386,10 +450,13 @@ Make sure the required environment variables are configured before starting the 
 
 Backend Developer focused on building scalable, maintainable, and well-structured backend systems.
 
-🌐 **Portfolio:**  
+🌐 **Portfolio:**
 https://noushidh.shop/
+
+---
 
 ## 📄 License
 
-This project was created for learning and portfolio purposes.
+This project was created for **learning and portfolio purposes**.
 
+See the [LICENSE](LICENSE) file for more information.
