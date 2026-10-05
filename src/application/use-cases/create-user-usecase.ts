@@ -1,16 +1,15 @@
 import { CreateUserDTO } from "../dtos/CreateUserDTO";
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../interface/IUserRepository";
+import { IUserEventPublisher } from "../interface/IUserEventPublisher";
 import { UserResponseDTO } from "../dtos/UserResponseDTO";
-import { ISyncRepository } from "../interface/ISyncRepository";
 import { IHashService } from "../interface/IHashService";
 import { IJwtService } from "../interface/IJwtService";
 
 export class CreateUserUseCase {
   constructor(
     private userRepository: IUserRepository,
-    private postgresRepository: IUserRepository,
-    private syncRepository: ISyncRepository,
+    private eventPublisher: IUserEventPublisher,
     private hashService: IHashService,
     private jwtService: IJwtService,
   ) {}
@@ -30,6 +29,7 @@ export class CreateUserUseCase {
       new Date(),
     );
     const createdUser = await this.userRepository.create(user);
+    await this.eventPublisher.publishUserCreated(createdUser)
 
     const token = this.jwtService.generateToken({
       id: createdUser.id,
@@ -37,12 +37,6 @@ export class CreateUserUseCase {
       email: createdUser.email,
     });
 
-    try {
-      await this.postgresRepository.create(createdUser);
-    } catch (err) {
-      console.error("Postgres Error:", err);
-      await this.syncRepository.saveFailedSync(createdUser);
-    }
     return {
       user: {
         id: createdUser.id,

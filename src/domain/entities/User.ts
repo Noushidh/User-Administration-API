@@ -5,5 +5,12 @@ export class User {
     public email: string,
     public password: string,
     public createdAt: Date,
-  ) {}
+  ) {
+    if(!name.trim()){
+      throw new Error("user name cannot be empty")
+    }
+    if(!email.includes("@")){
+      throw new Error("Invalid email")
+    }
+  }
 }

@@ -3,19 +3,31 @@ import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
-import authROutes from "./presentation/routes/auth.routes";
 import { errorHandler } from "./presentation/middlewares/error.middleware";
+import { createAuthRoutes } from "./presentation/routes/auth.routes";
 
-const app = express();
+import { createContainer } from "./infrastructure/container/container";
 
-app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(cookieParser());
+export function createApp(
+  container: ReturnType<typeof createContainer>
+) {
+  const app = express();
 
-app.use("/api/auth", authROutes);
+  app.use(cors());
+  app.use(express.json());
+  app.use(morgan("dev"));
+  app.use(cookieParser());
 
-app.use(errorHandler);
+  app.use(
+    "/api/auth",
+    createAuthRoutes(
+      container.registerController,
+      container.authController,
+      container.logoutController,
+    )
+  );
 
-export default app;
+  app.use(errorHandler);
+
+  return app; 
+}

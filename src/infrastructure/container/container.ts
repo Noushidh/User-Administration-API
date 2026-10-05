@@ -1,9 +1,8 @@
+import { Channel } from "amqplib";
 import { CreateUserUseCase } from "../../application/use-cases/create-user-usecase";
 import { LoginUserUseCase } from "../../application/use-cases/login-user-usecase";
 
 import { MongoUserRepository } from "../database/mongodb/mongo-user.repository";
-import { PostgresUserRepository } from "../database/postgresql/postgres-user.repository";
-import { SyncRepository } from "../database/mongodb/sync.repository";
 
 import { BcryptHashService } from "../services/BcryptHashService";
 import { JwtService } from "../services/JwtService";
@@ -12,33 +11,43 @@ import { AuthController } from "../../presentation/controllers/user/login.contro
 import { RegisterController } from "../../presentation/controllers/user/user.controller";
 import { LogoutController } from "../../presentation/controllers/user/logout.controller";
 
+import { UserProducer } from "../rabbitmq/user.producer";
 
-const userRepository = new MongoUserRepository();
+export function createContainer(channel: Channel) {
 
-const postgresRepository = new PostgresUserRepository();
+  const userRepository = new MongoUserRepository();
 
-const syncRepository = new SyncRepository();
+  const hashService = new BcryptHashService();
 
+  const jwtService = new JwtService();
 
-const hashService = new BcryptHashService();
+  const userProducer = new UserProducer(channel);
 
-export const jwtService = new JwtService();
+  const createUserUseCase = new CreateUserUseCase(
+    userRepository,
+    userProducer,
+    hashService,
+    jwtService,
+  );
 
+  const loginUserUseCase = new LoginUserUseCase(
+    userRepository,
+    hashService,
+    jwtService,
+  );
 
-export const createUserUseCase = new CreateUserUseCase(
-  userRepository,
-  postgresRepository,
-  syncRepository,
-  hashService,
-  jwtService,
-);
+  const registerController =
+    new RegisterController(createUserUseCase);
 
-export const loginUserUseCase = new LoginUserUseCase(
-  userRepository,
-  hashService,
-  jwtService,
-);
+  const authController =
+    new AuthController(loginUserUseCase);
 
-export const authController = new AuthController(loginUserUseCase)
-export const registerController = new RegisterController(createUserUseCase)
-export const logoutController = new LogoutController()
+  const logoutController =
+    new LogoutController();
+
+  return {
+    registerController,
+    authController,
+    logoutController,
+  };
+}
