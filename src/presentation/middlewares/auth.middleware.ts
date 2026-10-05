@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { jwtService } from "../../infrastructure/container/container";
+import { JwtService } from "../../infrastructure/services/JwtService";
 
 export const authMiddleware = (
+  jwtService: JwtService
+) => (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   try {
     const token = req.cookies.token;
